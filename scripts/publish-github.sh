@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-repo='kentaro-oishi-c3creators/dot-atelier'
+repo='kentaro-oishi-c3creators/app-dot-atelier'
 gh api "repos/$repo" --jq .full_name
 npm ci
 npm test
