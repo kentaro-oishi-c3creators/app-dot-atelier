@@ -2,6 +2,8 @@
 
 ドット絵を作成します。画像編集がはじめてでも、下絵を選んで色を塗り、自分だけのキャラクター・アイコンを完成できるWebアプリです。
 
+[アプリを開く](https://kentaro-oishi-c3creators.github.io/app-dot-atelier/) · [使い方](https://kentaro-oishi-c3creators.github.io/app-dot-atelier/docs/guide.html)
+
 ## できること
 
 - 冒険者・ねこ・ハートの32×32下絵

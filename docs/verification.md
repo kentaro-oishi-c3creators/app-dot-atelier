@@ -24,7 +24,7 @@ PCの原寸キャンバスが高さ制限で一部隠れていたため、拡大
 
 ChromiumのPC・スマホエミュレーションを使用。実機iPhone/Safari・Android/Chromeでのファイル保存挙動は未確認。自動保存は端末・ブラウザ別。AI画像生成・レイヤー・PNG読み込みは初版の対象外。
 
-GitHubリポジトリの作成とGitHub Pages本番デプロイは、新規作成権限の不足により保留。2026-10-10時点で作成APIは403、予定リポジトリは404。ローカルのビルド成功は本番公開の成功を意味しない。
+GitHubリポジトリapp-dot-atelierにソース登録済み。2026-10-10、Actions run 38020511453のテスト・ビルド・デプロイがすべて成功。公開URL https://kentaro-oishi-c3creators.github.io/app-dot-atelier/ 、利用ガイド、JS/CSSファイルのHTTP 200を確認した。
 
 ## 再現
 

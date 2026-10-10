@@ -1,22 +1,23 @@
 # GitHub Pagesへの公開
 
-## 初回
+## 公開先と管理先
 
-1. `kentaro-oishi-c3creators` に公開リポジトリ `dot-atelier` を作成する。
-2. GitHub連携にそのリポジトリへの読み書き権限を付与する。
-3. リポジトリへソースをpushする。
-4. Settings → Pages → Build and deployment → Sourceを **GitHub Actions** にする。
-5. Actionsで `Build and deploy GitHub Pages` の成功を確認する。
-6. Pages設定に表示されたURLでアプリと `docs/guide.html` を確認する。
+- リポジトリ： https://github.com/kentaro-oishi-c3creators/app-dot-atelier
+- Pages： https://kentaro-oishi-c3creators.github.io/app-dot-atelier/
+- 利用ガイド： https://kentaro-oishi-c3creators.github.io/app-dot-atelier/docs/guide.html
 
-公開用ビルドは `npm ci && npm test && npm run build`。`dist/` にアプリと利用ガイドを出力。履歴、端末内作品、node_modules、認証情報はリポジトリに含めない。
+ソースとドキュメントの正本はこのリポジトリのmainとdocs/。Driveには企画・完成時点の資料を保存する。
 
-## 更新
+## 初回設定
 
-mainへのpushがテスト・ビルド・公開を開始する。必要ならActionsのRun workflowで再公開。ソースは公開される。APIキーなど秘密情報をコミットしない。
+ユーザーがスマートフォンから公開リポジトリapp-dot-atelierを作成。初期READMEの履歴を維持してソースを登録。GitHubアプリにリポジトリへのアクセスを許可し、Settings → Pages → Build and deployment → SourceをGitHub Actionsへ変更する。
 
-## 初回作成時の制約
+GitHubアプリの通常のソース書き込み権限だけではPagesサイトの初回作成が403になる場合がある。その場合はリポジトリ所有者が上記Pages設定を行う。設定後は失敗したActionsを再実行できる。
 
-2026-10-10、環境のGitHub認証でユーザー取得は成功したが、GraphQL createRepositoryとREST POST /user/reposは両方403「Resource not accessible by integration」。その接続だけでは新規リポジトリ作成不可。空リポジトリの作成・連携権限が整った後でpush・Pages設定を続行する。
+## 更新と再公開
 
-接続済みの gh CLI で、空リポジトリ作成後に `bash scripts/publish-github.sh` を実行すると、テスト・ビルド・Pages設定・mainへのpushまで行います。Contentsの書き込み、workflowファイルの書き込み、Pages設定の権限が必要です。公開成功はActionsの成功とPages URLで確認してください。
+mainへのpushが.github/workflows/pages.ymlでテスト・ビルド・公開を開始する。必要ならActionsのRun workflowで再公開する。
+
+公開用ビルドはnpm ci、npm test、npm run build。dist/にアプリと利用ガイドを出力する。作品データ、認証情報、node_modulesはソース管理に含めない。
+
+公開成功はActionsの成功とPages URLで確認する。端末内の作品データはデプロイに含まれず、localStorageに保存される。
