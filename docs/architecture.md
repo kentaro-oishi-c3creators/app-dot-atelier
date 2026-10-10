@@ -25,3 +25,7 @@ localStorageキーは `dot-atelier-v1`。自動保存失敗は画面で通知。
 ## 公開・外部通信
 
 描画データをサーバーへ送信しない。Google Fontsからフォントを読み込むが、読み込めない場合もシステムフォントで動作する。GitHub Pagesの通常アクセスログはホスティング側のもの。オフライン保証・PWAは未対応。
+
+## AIへの引き継ぎ
+
+src/Handoff.tsxは雛形・プロンプト・Markdown出力・JSON貼り付けを担当。src/handoff.tsで出力形式と貼り付けJSONを検証する。プロンプトの下書きはdot-atelier-handoff-v1に保存。AIへの自動送信はなく、利用者がコピーして外部のAIに渡す。返されたJSONは既存のvalidateProjectを通し、確認ダイアログ後にキャンバスへ反映する。コード囲み付きJSONも受け付ける。

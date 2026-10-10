@@ -15,7 +15,7 @@ test('draw, undo, redo, autosave, export PNG, and round-trip editing data',async
  const jsonPromise=page.waitForEvent('download');await page.getByRole('button',{name:'編集データを保存',exact:true}).click();const json=await jsonPromise,exported=JSON.parse(await readFile((await json.path())!,'utf8'));expect(exported.pixels[0]).toBe('#e2686f');
  await page.getByRole('button',{name:'16 × 16',exact:true}).click();await page.getByRole('button',{name:'切り替える',exact:true}).click();expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('dot-atelier-v1')!).size)).toBe(16);
  await page.locator('input[type=file]').setInputFiles({name:'art.dot.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(exported))});await page.getByRole('button',{name:'切り替える',exact:true}).click();expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('dot-atelier-v1')!).pixels[0])).toBe('#e2686f');
- await page.locator('input[type=file]').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from('{"version":2}')});await expect(page.getByRole('status')).toContainText('読み込めません');
+ await page.locator('input[type=file]').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from('{"version":2}')});await expect(page.locator('.status')).toContainText('読み込めません');
  await page.screenshot({path:`/workspace/dot-atelier/${testInfo.project.name}.png`,fullPage:true});expect(errors).toEqual([]);
 });
 test('templates, fill, erase, grid, zoom, and documentation',async({page},testInfo)=>{
@@ -24,4 +24,11 @@ test('templates, fill, erase, grid, zoom, and documentation',async({page},testIn
  await page.getByRole('button',{name:'消しゴム',exact:true}).click();await c.scrollIntoViewIfNeeded();const er=(await c.boundingBox())!;if(testInfo.project.name==='mobile')await page.touchscreen.tap(er.x+1,er.y+1);else await c.click({position:{x:1,y:1}});await expect.poll(()=>page.evaluate(()=>JSON.parse(localStorage.getItem('dot-atelier-v1')!).pixels[0])).toBe('');
  await page.getByRole('button',{name:'マス目',exact:true}).click();await expect(page.locator('.pixel-grid')).toHaveCount(0);await page.getByRole('button',{name:'拡大',exact:true}).click();await expect(page.locator('.zoom-controls')).toContainText('2×');
  await page.getByRole('link',{name:'使い方・プロジェクト資料 ↗'}).click();await expect(page.getByRole('heading',{name:'ひとマスから、はじめよう。'})).toBeVisible();
+});
+test('create prompt, export Markdown, paste AI JSON, and explain storage',async({page})=>{
+ await page.goto('./');await page.getByLabel('1. JSONの雛形を選ぶ').selectOption('cat');await page.getByLabel('2. AIにお願いしたいこと').fill('青い服のねこ');await page.getByRole('button',{name:'プロンプトを作る',exact:true}).click();await expect(page.getByLabel('コピペエリア（自由に編集できます）')).toContainText('青い服のねこ');
+ const json=await page.getByLabel('JSON雛形 / 編集データ').inputValue();const p=JSON.parse(json);p.name='AIねこ';p.pixels[0]='#627dad';
+ const mdPromise=page.waitForEvent('download');await page.getByRole('button',{name:'Markdownで保存',exact:true}).click();const md=await mdPromise;expect(md.suggestedFilename()).toMatch(/\.md$/);const text=await readFile((await md.path())!,'utf8');expect(text).toContain('青い服のねこ');expect(text).toContain('"version": 1');
+ await page.getByLabel('3. AIのJSONを貼り付け').fill('```json\n'+JSON.stringify(p)+'\n```');await page.getByRole('button',{name:'貼り付けたJSONを読み込む',exact:true}).click();await page.getByRole('button',{name:'切り替える',exact:true}).click();await expect(page.getByLabel('作品名')).toHaveValue('AIねこ');
+ await page.reload();await expect(page.getByLabel('作品名')).toHaveValue('AIねこ');await expect(page.getByLabel('コピペエリア（自由に編集できます）')).toContainText('青い服のねこ');await expect(page.getByRole('heading',{name:'作品はどこに保存される？'})).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
