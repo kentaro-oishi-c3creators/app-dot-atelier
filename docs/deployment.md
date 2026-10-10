@@ -21,3 +21,4 @@ mainへのpushが.github/workflows/pages.ymlでテスト・ビルド・公開を
 公開用ビルドはnpm ci、npm test、npm run build。dist/にアプリと利用ガイドを出力する。作品データ、認証情報、node_modulesはソース管理に含めない。
 
 公開成功はActionsの成功とPages URLで確認する。端末内の作品データはデプロイに含まれず、localStorageに保存される。
+クラウド保存APIの公開先と再デプロイ手順、Google・Supabaseの接続設定は [cloud.md](cloud.md) に記載。アプリのPages公開とバックエンドのVercel公開は別のデプロイとして管理する。

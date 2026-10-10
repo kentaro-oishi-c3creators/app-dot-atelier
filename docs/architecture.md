@@ -20,7 +20,7 @@ Pointer Eventsとpointer captureでマウス・指・ペンを同じ描画処理
 
 `pixels` は実際には `size × size` 件必要。左上から行方向に並ぶ。空文字は透明、他は `#rrggbb`。許容サイズは16、32、64。作品名は80文字以内。読み込みは1MB以内でサイズ・件数・色・版を検証。
 
-localStorageキーは `dot-atelier-v1`。自動保存失敗は画面で通知。端末間移動は `.dot.json` ファイルを手動で保存・読み込みする。PNGにはレイヤーと編集履歴が含まれない。元に戻す履歴はメモリー内のみ。
+localStorageキーは `dot-atelier-v1`。自動保存失敗は画面で通知。端末間移動はクラウドへの明示的保存・読み込み、または `.dot.json` ファイルを手動で保存・読み込みする。PNGにはレイヤーと編集履歴が含まれない。元に戻す履歴はメモリー内のみ。
 
 ## 公開・外部通信
 
@@ -29,3 +29,7 @@ localStorageキーは `dot-atelier-v1`。自動保存失敗は画面で通知。
 ## AIへの引き継ぎ
 
 src/Handoff.tsxは雛形・プロンプト・Markdown出力・JSON貼り付けを担当。src/handoff.tsで出力形式と貼り付けJSONを検証する。プロンプトの下書きはdot-atelier-handoff-v1に保存。AIへの自動送信はなく、利用者がコピーして外部のAIに渡す。返されたJSONは既存のvalidateProjectを通し、確認ダイアログ後にキャンバスへ反映する。コード囲み付きJSONも受け付ける。
+
+## クラウド保存
+
+`src/Cloud.tsx` はSupabase Authと作品一覧、`cloud/api/projects.ts` は本人確認と非公開JSONの操作、`src/Drive.tsx` はGoogle Identity ServicesとDrive REST APIを担当する。共有のJSON検証は `cloud/lib/project.ts`。フロントにはpublishable keyだけを含め、サービスキーはVercel環境変数に限定する。詳細は [cloud.md](cloud.md)。

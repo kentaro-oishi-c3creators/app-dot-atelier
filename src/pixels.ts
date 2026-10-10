@@ -1,4 +1,6 @@
-export type Project = { version: 1; name: string; size: number; pixels: string[] };
+export { validateProject } from '../cloud/lib/project';
+export type { Project } from '../cloud/lib/project';
+import type { Project } from '../cloud/lib/project';
 export const palette = ['#263044','#59607b','#ffffff','#e7dfce','#f7ceaa','#e7a17c','#c27561','#744951','#e2686f','#f4ac8f','#f7d878','#d0df8a','#80b6a0','#458d8d','#9ac8dc','#627dad','#a996c9','#cc9dbb'];
 export function blank(size=32): string[] { return Array(size*size).fill(''); }
 export function template(kind: string): Project {
@@ -14,12 +16,6 @@ export function template(kind: string): Project {
  rows.forEach((row,y)=>[...row].forEach((c,x)=>{if(c==='x')rect(3+x*2,6+y*2,2,2,'#e2686f');}));rect(9,10,2,4,'#f4ac8f');
  }
  return { version:1, name:kind==='character'?'はじめての冒険者':kind==='cat'?'まんまるねこ':kind==='heart'?'小さなハート':'新しい作品', size,pixels };
-}
-export function validateProject(value: unknown): Project {
- if(!value || typeof value!=='object')throw new Error('編集データの形式が違います。');
- const p=value as Project;
- if(p.version!==1 || ![16,32,64].includes(p.size) || typeof p.name!=='string' || p.name.length>80 || !Array.isArray(p.pixels) || p.pixels.length!==p.size*p.size || !p.pixels.every(c=>typeof c==='string'&&(c===''||/^#[0-9a-f]{6}$/i.test(c))))throw new Error('この編集データは読み込めません。');
- return {version:1,name:p.name,size:p.size,pixels:[...p.pixels]};
 }
 export function line(x0:number,y0:number,x1:number,y1:number): [number,number][] {
  const result:[number,number][]=[]; const dx=Math.abs(x1-x0),dy=-Math.abs(y1-y0),sx=x0<x1?1:-1,sy=y0<y1?1:-1;let err=dx+dy;

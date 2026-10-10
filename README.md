@@ -45,6 +45,8 @@ Viteの `base: './'` によりリポジトリ配下のPages URLに対応。ド�
 - [公開手順](docs/deployment.md)
 - [検証結果](docs/verification.md)
 
-作品は端末とブラウザごとのlocalStorageに保存され、端末間では同期されません。バックアップや移動には編集データ保存を使ってください。作品データがGitHubに送られることはありません。
+編集途中の自動保存は端末とブラウザごとのlocalStorageに保存されます。明示的にクラウドへ保存した作品は、同じアカウントから別端末でも開けます。JSONファイルでのバックアップも可能です。作品データがGitHubに送られることはありません。
+
+クラウドはSupabaseの非公開ストレージ＋Vercel API、DriveはGoogle OAuth＋Drive APIです。接続設定と公開条件は [docs/cloud.md](docs/cloud.md) を参照してください。
 
 公開準備済みのリポジトリへ登録する場合：`bash scripts/publish-github.sh`。Pagesの設定・workflow書き込み権限が必要です。
